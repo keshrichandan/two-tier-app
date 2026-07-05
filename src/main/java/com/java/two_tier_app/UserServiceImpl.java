@@ -9,8 +9,13 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Override
     public User saveUser(User user) {
-        User user1 = userRepository.save(user);
-        System.out.println("user1.getId() = " + user1.getId());
-        return user1;
+        User existUser = userRepository.findByName(user.getFirstName(), user.getLastName());
+        if (existUser != null) {
+            System.out.println("User already exists! "+user.getFirstName()+" "+user.getLastName());
+            return existUser;
+        }
+        User newUser = userRepository.save(user);
+        System.out.println("newUser.getId() = " + newUser.getId());
+        return newUser;
     }
 }
